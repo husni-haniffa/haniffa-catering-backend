@@ -4,6 +4,7 @@ import com.haniffacateringbackend.api.model.Order;
 import com.haniffacateringbackend.api.repository.ItemRepository;
 import com.haniffacateringbackend.api.repository.OrderRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -18,6 +19,6 @@ public class OrderService {
     }
 
     public List<Order> getAllOrders() {
-        return orderRepository.findAll();
+        return orderRepository.findAll(Sort.by(Sort.Direction.DESC, "_id"));
     }
 }
