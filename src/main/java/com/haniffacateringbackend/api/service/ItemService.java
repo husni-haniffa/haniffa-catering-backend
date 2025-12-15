@@ -19,4 +19,16 @@ public class ItemService {
     public List<Item> getAllItems() {
         return itemRepository.findAll(Sort.by(Sort.Direction.DESC, "_id"));
     }
+
+    public Item getItemById(String id) {
+        return itemRepository.findById(id).orElseThrow();
+    }
+
+    public boolean deleteItem(String id) {
+        if(!itemRepository.existsById(id)) {
+            return false;
+        }
+        itemRepository.deleteById(id);
+        return true;
+    }
 }
