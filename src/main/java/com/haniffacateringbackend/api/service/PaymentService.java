@@ -4,6 +4,7 @@ import com.haniffacateringbackend.api.model.Payment;
 import com.haniffacateringbackend.api.model.PaymentStatus;
 import com.haniffacateringbackend.api.repository.PaymentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -34,6 +35,6 @@ public class PaymentService {
     }
 
     public List<Payment> getAllPayments() {
-        return paymentRepository.findAll();
+        return paymentRepository.findAll(Sort.by(Sort.Direction.DESC, "_id"));
     }
 }

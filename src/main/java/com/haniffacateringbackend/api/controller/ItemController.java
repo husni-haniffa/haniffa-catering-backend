@@ -22,4 +22,14 @@ public class ItemController {
     public List<Item> getAllItems() {
         return itemService.getAllItems();
     }
+
+    @GetMapping("/{id}")
+    public Item getItemById(@PathVariable String id) {
+        return itemService.getItemById(id);
+    }
+
+    @DeleteMapping("/{id}")
+    public boolean deleteItem(@PathVariable String id) {
+        return itemService.deleteItem(id);
+    }
 }
