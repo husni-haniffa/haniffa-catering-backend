@@ -33,12 +33,12 @@ public class PaymentService {
 
         paymentDetail.setBalance(balance);
 
-        double balanceAmount = paymentDetail.getBalance();
+        double paidSoFar = paymentDetail.getPaid();
 
-        if (balanceAmount < amountToPay) {
+        if (paidSoFar > 0 && paidSoFar < amountToPay) {
             paymentDetail.setPaymentStatus(PaymentStatus.PARTIAL);
 
-        } else if (balanceAmount == 0) {
+        } else if (paidSoFar == amountToPay) {
             paymentDetail.setPaymentStatus(PaymentStatus.PAID);
         }
 
