@@ -1,5 +1,6 @@
 package com.haniffacateringbackend.api.service;
 
+import com.haniffacateringbackend.api.middlewares.ResourceNotFoundException;
 import com.haniffacateringbackend.api.model.Cart;
 import com.haniffacateringbackend.api.model.Order;
 import com.haniffacateringbackend.api.model.OrderSummary;
@@ -25,6 +26,7 @@ public class OrderSummaryService {
     }
 
     public OrderSummary getOrderSummary() {
-        return orderSummaryRepository.findById("Order_Summary").orElseThrow();
+        return orderSummaryRepository.findById("Order_Summary")
+                .orElseThrow(() -> new ResourceNotFoundException("Order summary not found"));
     }
 }
