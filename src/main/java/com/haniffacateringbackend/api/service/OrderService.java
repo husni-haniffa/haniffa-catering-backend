@@ -1,7 +1,7 @@
 package com.haniffacateringbackend.api.service;
 
-import com.haniffacateringbackend.api.model.Order;
-import com.haniffacateringbackend.api.model.OrderSummary;
+import com.haniffacateringbackend.api.middlewares.ResourceNotFoundException;
+import com.haniffacateringbackend.api.model.*;
 import com.haniffacateringbackend.api.repository.ItemRepository;
 import com.haniffacateringbackend.api.repository.OrderRepository;
 import com.haniffacateringbackend.api.repository.OrderSummaryRepository;
@@ -32,11 +32,11 @@ public class OrderService {
 
     public Order createOrder(Order order) {
         Order savedOrder = orderRepository.save(order);
-                OrderSummary summary = orderSummaryRepository.findById("Order_Summary")
+        OrderSummary summary = orderSummaryRepository.findById("Order_Summary")
                         .orElseGet(() -> {
-                            OrderSummary s = new OrderSummary();
-                            s.setId("Order_Summary");
-                            return s;
+                            OrderSummary orderSummary = new OrderSummary();
+                            orderSummary.setId("Order_Summary");
+                            return orderSummary;
                         });
         orderSummaryService.updateOrderSummary(summary, order);
         orderSummaryRepository.save(summary);
@@ -45,5 +45,41 @@ public class OrderService {
 
     public List<Order> getAllOrders() {
         return orderRepository.findAll(Sort.by(Sort.Direction.DESC, "_id"));
+    }
+
+    public Order cancelOrder(String id) {
+        Order order = orderRepository.findById(id).
+                orElseThrow(() -> new ResourceNotFoundException("Order not found with id: " + id));
+        order.setOrderStatus(OrderStatus.CANCELLED);
+        return orderRepository.save(order);
+    }
+
+    public Order orderDelivered(String id) {
+        Order order = orderRepository.findById(id).
+                orElseThrow(() -> new ResourceNotFoundException("Order not found with id: " + id));
+        order.setOrderStatus(OrderStatus.DELIVERED);
+        return orderRepository.save(order);
+    }
+
+    public Order orderPaid(String id) {
+        Order order = orderRepository.findById(id).
+                orElseThrow(() -> new ResourceNotFoundException("Order not found with id: " + id));
+        order.setOrderPaymentStatus(OrderPaymentStatus.PAID);
+        return orderRepository.save(order);
+
+    }
+
+    public Order orderPaymentTypeBank(String id) {
+        Order order = orderRepository.findById(id).
+                orElseThrow(() -> new ResourceNotFoundException("Order not found with id: " + id));
+        order.setOrderPaymentType(OrderPaymentType.BANK);
+        return orderRepository.save(order);
+    }
+
+    public Order orderPaymentTypeCash(String id) {
+        Order order = orderRepository.findById(id).
+                orElseThrow(() -> new ResourceNotFoundException("Order not found with id: " + id));
+        order.setOrderPaymentType(OrderPaymentType.CASH);
+        return orderRepository.save(order);
     }
 }
