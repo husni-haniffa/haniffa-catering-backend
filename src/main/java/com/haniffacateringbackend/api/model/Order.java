@@ -18,4 +18,7 @@ public class Order {
     private double totalAmount;
     private double advance;
     private double balance;
+    private OrderStatus orderStatus = OrderStatus.PENDING;
+    private OrderPaymentType orderPaymentType = OrderPaymentType.CASH;
+    private OrderPaymentStatus orderPaymentStatus = OrderPaymentStatus.PENDING;
 }
