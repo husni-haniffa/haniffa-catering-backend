@@ -3,6 +3,8 @@ package com.haniffacateringbackend.api.controller;
 import com.haniffacateringbackend.api.model.Payment;
 import com.haniffacateringbackend.api.service.PaymentService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -20,8 +22,9 @@ public class PaymentController {
     }
 
     @PutMapping("/{id}")
-    public Payment updatePayment(@PathVariable String id, @RequestBody double amount) {
-        return paymentService.updatePayment(id, amount);
+    public ResponseEntity<Payment> updatePayment(@PathVariable String id, @RequestBody double amount) {
+        Payment updatedPayment = paymentService.updatePayment(id, amount);
+        return new ResponseEntity<>(updatedPayment, HttpStatus.OK);
     }
 
     @GetMapping

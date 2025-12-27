@@ -1,5 +1,6 @@
 package com.haniffacateringbackend.api.service;
 
+import com.haniffacateringbackend.api.middlewares.ResourceNotFoundException;
 import com.haniffacateringbackend.api.model.Item;
 import com.haniffacateringbackend.api.repository.ItemRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,14 +22,14 @@ public class ItemService {
     }
 
     public Item getItemById(String id) {
-        return itemRepository.findById(id).orElseThrow();
+        return itemRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Item not found with id: " + id));
     }
 
-    public boolean deleteItem(String id) {
-        if(!itemRepository.existsById(id)) {
-            return false;
+    public void deleteItem(String id) {
+        if (!itemRepository.existsById(id)) {
+            throw new ResourceNotFoundException("Item not found with id: " + id);
         }
         itemRepository.deleteById(id);
-        return true;
     }
 }

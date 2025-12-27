@@ -1,5 +1,6 @@
 package com.haniffacateringbackend.api.service;
 
+import com.haniffacateringbackend.api.middlewares.ResourceNotFoundException;
 import com.haniffacateringbackend.api.model.Payment;
 import com.haniffacateringbackend.api.model.PaymentStatus;
 import com.haniffacateringbackend.api.repository.PaymentRepository;
@@ -19,18 +20,28 @@ public class PaymentService {
     }
 
     public Payment updatePayment(String id, double amount) {
-        Payment paymentDetail = paymentRepository.findById(id).orElseThrow();
+
+        Payment paymentDetail = paymentRepository.findById(id).
+                orElseThrow(() -> new ResourceNotFoundException("Payment not found with id: " + id));
+
         double amountToPay = paymentDetail.getAmountToPay();
+
         double paidAmount = paymentDetail.getPaid() + amount;
+
         double balance = amountToPay - paidAmount;
         paymentDetail.setPaid(paidAmount);
+
         paymentDetail.setBalance(balance);
-        double balanceAmount = paymentDetail.getBalance();
-        if (balanceAmount < amountToPay) {
+
+        double paidSoFar = paymentDetail.getPaid();
+
+        if (paidSoFar > 0 && paidSoFar < amountToPay) {
             paymentDetail.setPaymentStatus(PaymentStatus.PARTIAL);
-        } else if (balanceAmount == 0) {
+
+        } else if (paidSoFar == amountToPay) {
             paymentDetail.setPaymentStatus(PaymentStatus.PAID);
         }
+
         return paymentRepository.save(paymentDetail);
     }
 

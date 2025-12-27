@@ -32,11 +32,11 @@ public class OrderService {
 
     public Order createOrder(Order order) {
         Order savedOrder = orderRepository.save(order);
-                OrderSummary summary = orderSummaryRepository.findById("Order_Summary")
+        OrderSummary summary = orderSummaryRepository.findById("Order_Summary")
                         .orElseGet(() -> {
-                            OrderSummary s = new OrderSummary();
-                            s.setId("Order_Summary");
-                            return s;
+                            OrderSummary orderSummary = new OrderSummary();
+                            orderSummary.setId("Order_Summary");
+                            return orderSummary;
                         });
         orderSummaryService.updateOrderSummary(summary, order);
         orderSummaryRepository.save(summary);
