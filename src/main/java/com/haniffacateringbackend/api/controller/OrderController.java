@@ -31,4 +31,29 @@ public class OrderController {
     public OrderSummary getOrderSummary() {
         return orderSummaryService.getOrderSummary();
     }
+
+    @PutMapping("/cancelled/{id}")
+    public Order cancelOrder(@PathVariable String id) {
+        return orderService.cancelOrder(id);
+    }
+
+    @PutMapping("/delivered/{id}")
+    public Order orderDelivered(@PathVariable String id) {
+        return orderService.orderDelivered(id);
+    }
+
+    @PutMapping("/paid/{id}")
+    public Order orderPaid(@PathVariable String id) {
+        return orderService.orderPaid(id);
+    }
+
+    @PutMapping("/bank/{id}")
+    public Order orderPaymentTypeBank(@PathVariable String id) {
+        return orderService.orderPaymentTypeBank(id);
+    }
+
+    @PutMapping("/cash/{id}")
+    public Order orderPaymentTypeCash(@PathVariable String id) {
+        return orderService.orderPaymentTypeCash(id);
+    }
 }
